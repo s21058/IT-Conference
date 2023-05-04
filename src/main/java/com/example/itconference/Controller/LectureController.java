@@ -69,25 +69,6 @@ public class LectureController {
 //        return ResponseEntity.ok("Lecture was successfully added to database");
         return null;
     }
-
-    protected List<LectureDTO> parseToDTO(List<Lecture> lectures) {
-        return lectures.stream().map(lecture -> {
-            LectureDTO dto = new LectureDTO();
-            dto.setTopic(lecture.getTopic());
-            dto.setStartTime(lecture.getStartTime());
-            dto.setEndTime(lecture.getEndTime());
-            return dto;
-        }).collect(Collectors.toList());
-    }
-
-    protected LectureDTO parseToDTO(Lecture lecture) {
-        LectureDTO dto = new LectureDTO();
-        dto.setTopic(lecture.getTopic());
-        dto.setStartTime(lecture.getStartTime());
-        dto.setEndTime(lecture.getEndTime());
-        return dto;
-    }
-
     protected boolean isValidTime(Lecture lecture, Map<LocalTime, LocalTime> validTime) {
         return validTime.entrySet()
                 .stream()

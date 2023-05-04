@@ -42,7 +42,7 @@ public class ParticipantServiceImpl implements ParticipantService{
 
     @Override
     public Optional<Participant> findByLogin(String login) {
-        return Optional.empty();
+        return participantRepository.findByLogin(login);
     }
 
     @Override

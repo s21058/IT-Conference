@@ -1,5 +1,6 @@
 package com.example.itconference.Model;
 
+import com.example.itconference.DTO.LectureDTO;
 import jakarta.persistence.*;
 
 import lombok.Getter;
@@ -12,6 +13,8 @@ import javax.validation.constraints.Size;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Entity
 public class Lecture {
     @Id
@@ -43,5 +46,14 @@ public class Lecture {
 
     public Lecture() {
 
+    }
+    public static List<LectureDTO> parseToDTO(List<Lecture> lectures) {
+        return lectures.stream().map(lecture -> {
+            LectureDTO dto = new LectureDTO();
+            dto.setTopic(lecture.getTopic());
+            dto.setStartTime(lecture.getStartTime());
+            dto.setEndTime(lecture.getEndTime());
+            return dto;
+        }).collect(Collectors.toList());
     }
 }
