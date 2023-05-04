@@ -1,13 +1,13 @@
 package com.example.itconference.DTO;
 
-import com.example.itconference.Model.Lecture;
-import lombok.Data;
+import com.example.itconference.DTO.Participant.ParticipantGetDTO;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class LectureDTO {
     @Getter
@@ -22,5 +22,7 @@ public class LectureDTO {
     @Setter
     private LocalTime endTime;
 
-
+    @Getter
+    @Setter
+    private List<ParticipantGetDTO>participants=new ArrayList<>();
 }

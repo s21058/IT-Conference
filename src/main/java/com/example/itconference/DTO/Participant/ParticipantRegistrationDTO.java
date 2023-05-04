@@ -1,4 +1,4 @@
-package com.example.itconference.DTO;
+package com.example.itconference.DTO.Participant;
 
 import com.example.itconference.Model.Participant;
 import lombok.Getter;

@@ -1,9 +1,10 @@
 package com.example.itconference.Controller;
 
 import com.example.itconference.DTO.LectureDTO;
-import com.example.itconference.DTO.ParticipantReservationDTO;
-import com.example.itconference.DTO.ParticipantRegistrationDTO;
+import com.example.itconference.DTO.Participant.ParticipantGetDTO;
+import com.example.itconference.DTO.Participant.ParticipantRegistrationDTO;
 import com.example.itconference.Model.Lecture;
+import com.example.itconference.Model.Participant;
 import com.example.itconference.Service.ParticipantService.ParticipantService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,12 +28,12 @@ public class ParticipantController {
     }
     @GetMapping("/{login}/reservations")
     public List<LectureDTO> showReservations(@PathVariable String login){
-        return Lecture.parseToDTO(participantService.findByLogin(login).get().getLectures());
+        return Lecture.parseToDTOList(participantService.findByLogin(login).get().getLectures());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ParticipantReservationDTO> findParticipant(@PathVariable Integer id){
-        return null;
+    public ResponseEntity<ParticipantGetDTO> findParticipant(@PathVariable Integer id){
+        return ResponseEntity.ok(Participant.toDTO(participantService.findById(id)));
     }
 }
 

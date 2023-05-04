@@ -1,8 +1,10 @@
 package com.example.itconference.Service.ParticipantService;
 
-import com.example.itconference.DTO.ParticipantRegistrationDTO;
+
+import com.example.itconference.DTO.Participant.ParticipantRegistrationDTO;
 import com.example.itconference.Model.Participant;
 import com.example.itconference.Repository.ParticipantRepository;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -47,7 +49,7 @@ public class ParticipantServiceImpl implements ParticipantService{
 
     @Override
     public Optional<Participant> findByEmail(String email) {
-        return Optional.empty();
+        return participantRepository.findByEmail(email);
     }
 
     @Override

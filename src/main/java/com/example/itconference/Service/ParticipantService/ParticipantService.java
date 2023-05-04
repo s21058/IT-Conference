@@ -1,6 +1,7 @@
 package com.example.itconference.Service.ParticipantService;
 
-import com.example.itconference.DTO.ParticipantRegistrationDTO;
+import com.example.itconference.DTO.Participant.ParticipantGetDTO;
+import com.example.itconference.DTO.Participant.ParticipantRegistrationDTO;
 import com.example.itconference.Model.Participant;
 import org.springframework.http.ResponseEntity;
 

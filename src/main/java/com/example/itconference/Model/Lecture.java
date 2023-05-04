@@ -1,6 +1,7 @@
 package com.example.itconference.Model;
 
 import com.example.itconference.DTO.LectureDTO;
+import com.example.itconference.DTO.Participant.ParticipantGetDTO;
 import jakarta.persistence.*;
 
 import lombok.Getter;
@@ -40,14 +41,14 @@ public class Lecture {
 
     @Getter
     @Setter
-    @ManyToMany
     @Size(max = 5)
-    private List<Participant> participants=new ArrayList<>();
+    @ManyToMany
+    private List<Participant> participants;
 
     public Lecture() {
 
     }
-    public static List<LectureDTO> parseToDTO(List<Lecture> lectures) {
+    public static List<LectureDTO> parseToDTOList(List<Lecture> lectures) {
         return lectures.stream().map(lecture -> {
             LectureDTO dto = new LectureDTO();
             dto.setTopic(lecture.getTopic());
@@ -56,4 +57,12 @@ public class Lecture {
             return dto;
         }).collect(Collectors.toList());
     }
+    public static LectureDTO parseToDTO(Lecture lecture){
+        LectureDTO dto=new LectureDTO();
+        dto.setTopic(lecture.getTopic());
+        dto.setStartTime(lecture.getStartTime());
+        dto.setEndTime(lecture.getEndTime());
+        return dto;
+    }
+
 }
