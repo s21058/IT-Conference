@@ -6,10 +6,15 @@ import com.example.itconference.Model.Lecture;
 import com.example.itconference.Model.Participant;
 import com.example.itconference.Repository.ConferenceRepository;
 import com.example.itconference.Repository.ParticipantRepository;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -59,7 +64,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public ResponseEntity<?> makeReservation(Integer idLecture, ParticipantReservationDTO participantInfo) {
+    public ResponseEntity<?> makeReservation(Integer idLecture, ParticipantReservationDTO participantInfo) throws IOException {
         var lecture = Lecture.parseToDTO(conferenceRepository.findById(idLecture));
         var participant= Participant.toDTO(participantRepository.findByLogin(participantInfo.getLogin()));
         if(participantRepository.findAll().stream().anyMatch(p->p.getLogin().equals(participantInfo.getLogin())&&
@@ -71,6 +76,7 @@ public class ConferenceServiceImpl implements ConferenceService {
         }
         participant.getLectures().add(lecture);
         lecture.getParticipants().add(participant);
+        writeToFile("../powiadomienia.txt",participant.getEmail());
         return ResponseEntity.ok("You successfully registered to this lecture" + lecture.getTopic()+" on "+lecture.getStartTime()+"-"+lecture.getEndTime());
     }
 
@@ -84,5 +90,13 @@ public class ConferenceServiceImpl implements ConferenceService {
     private boolean isLecturePresent(List<Lecture> lectures, Lecture lecture) {
         return lectures.stream().anyMatch(
                 l -> l.getStartTime().compareTo(lecture.getStartTime()) == 0);
+    }
+
+    private void writeToFile(String path,String email) throws IOException {
+        String data=LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))+", "+email+", Hello,We are appreciate that you decided to participate in our lectures! See you on";
+        Resource resource=new FileSystemResource(path);
+        FileWriter fileWriter=new FileWriter(resource.getFile(),true);
+        fileWriter.write(data);
+        fileWriter.close();
     }
 }

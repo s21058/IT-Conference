@@ -5,6 +5,7 @@ import com.example.itconference.Model.Lecture;
 import org.springframework.http.ResponseEntity;
 
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ConferenceService {
@@ -12,6 +13,6 @@ public interface ConferenceService {
     ResponseEntity<String> saveLecture(Lecture lecture);
     Lecture findById(Integer id);
     List<Lecture> findByTopic(String topic);
-    ResponseEntity<?>makeReservation(Integer idLecture, ParticipantReservationDTO reservationDTO);
+    ResponseEntity<?>makeReservation(Integer idLecture, ParticipantReservationDTO reservationDTO) throws IOException;
 
 }

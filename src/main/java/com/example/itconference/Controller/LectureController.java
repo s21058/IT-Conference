@@ -8,6 +8,8 @@ import com.example.itconference.Service.ParticipantService.ParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -32,9 +34,8 @@ public class LectureController {
         return ResponseEntity.ok(Lecture.parseToDTO(conferenceService.findById(idLecture)));
     }
 
-    //As a second parameter we can use Principal from Spring Security to identify authorized user
     @PostMapping("/lectures/lecture/{idLecture}/submit")
-    public ResponseEntity<?> submitChoice(@PathVariable Integer idLecture, @RequestBody ParticipantReservationDTO participantInfo) {
+    public ResponseEntity<?> submitChoice(@PathVariable Integer idLecture, @RequestBody ParticipantReservationDTO participantInfo) throws IOException {
         return conferenceService.makeReservation(idLecture,participantInfo);
     }
 

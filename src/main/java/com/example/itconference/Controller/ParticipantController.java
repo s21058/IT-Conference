@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import java.util.List;
 
 @RestController
@@ -26,13 +27,17 @@ public class ParticipantController {
     public ResponseEntity<?> register(@Valid @RequestBody ParticipantRegistrationDTO participantRegistrationDTO) {
         return ResponseEntity.ok(participantService.save(participantRegistrationDTO));
     }
-    @GetMapping("/{login}/reservations")
-    public List<LectureDTO> showReservations(@PathVariable String login){
+    @PutMapping("/changeEmail")
+    public ResponseEntity<?>changeEmail(@RequestParam Integer id,@Valid @Email @RequestParam String email){
+        return participantService.updateEmail(id,email);
+    }
+    @GetMapping("/reservations")
+    public List<LectureDTO> showReservations(@RequestParam String login){
         return Lecture.parseToDTOList(participantService.findByLogin(login).get().getLectures());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ParticipantGetDTO> findParticipant(@PathVariable Integer id){
+    @GetMapping("/")
+    public ResponseEntity<ParticipantGetDTO> findParticipant(@RequestParam Integer id){
         return ResponseEntity.ok(Participant.toDTO(participantService.findById(id)));
     }
 }

@@ -43,6 +43,19 @@ public class ParticipantServiceImpl implements ParticipantService{
     }
 
     @Override
+    public ResponseEntity<?> updateEmail(Integer id, String email) {
+        var participant=participantRepository.findById(id);
+        if(participant.getEmail().equals(email)){
+            return ResponseEntity.badRequest().body("Your new email and current email the same");
+        }else if(participantRepository.findByEmail(email).isPresent()){
+            return ResponseEntity.badRequest().body("This email already exist");
+        }
+        participant.setEmail(email);
+        participantRepository.save(participant);
+        return ResponseEntity.ok("Mail successfully changed");
+    }
+
+    @Override
     public Optional<Participant> findByLogin(String login) {
         return participantRepository.findByLogin(login);
     }
