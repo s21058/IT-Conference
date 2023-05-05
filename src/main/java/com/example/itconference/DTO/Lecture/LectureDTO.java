@@ -1,6 +1,7 @@
 package com.example.itconference.DTO.Lecture;
 
 import com.example.itconference.DTO.Participant.ParticipantGetDTO;
+import com.example.itconference.DTO.Participant.ParticipantInLectureDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,5 +28,5 @@ public class LectureDTO {
 
     @Getter
     @Setter
-    private List<ParticipantGetDTO>participants=new ArrayList<>();
+    private List<ParticipantInLectureDTO>participants=new ArrayList<>();
 }

@@ -61,11 +61,11 @@ public class ConferenceServiceImpl implements ConferenceService {
         return conferenceRepository.findByTopic(topic);
     }
 
-    // TODO: 04.05.2023 Сначала добавить в Лекцию участника и наоборот
     @Override
     public ResponseEntity<?> makeReservation(Integer idLecture, ParticipantReservationDTO participantInfo) throws IOException {
         var lecture = conferenceRepository.findById(idLecture);
         var participant = participantRepository.findByLogin(participantInfo.getLogin());
+
         if (participantRepository.findAll().stream().anyMatch(p -> p.getLogin().equals(participantInfo.getLogin()) &&
                 !p.getEmail().equals(participantInfo.getEmail()))) {
             return ResponseEntity.badRequest().body("This login[" + participantInfo.getLogin() + "] already used");
@@ -73,13 +73,17 @@ public class ConferenceServiceImpl implements ConferenceService {
         } else if (participant.get().getLectures().stream().anyMatch(l -> l.getTopic().equals(lecture.getTopic()) &&
                 l.getStartTime().compareTo(lecture.getStartTime()) == 0)) {
             return ResponseEntity.badRequest().body("You have already been registered for this lecture");
+
+        }else if(participant.get().getLectures().stream().anyMatch(l->l.getStartTime().compareTo(lecture.getStartTime())==0)){
+            return ResponseEntity.badRequest().body("You already have reservation at "+lecture.getStartTime());
         }
         lecture.getParticipants().add(participant.get());
+        System.out.println(lecture.getParticipants());
         participant.get().getLectures().add(lecture);
         participantRepository.save(participant.get());
         conferenceRepository.save(lecture);
         writeToFile(participant.get().getEmail(), lecture.getStartTime());
-        return ResponseEntity.ok("You successfully registered to this lecture" + lecture.getTopic() + " on " + lecture.getStartTime() + "-" + lecture.getEndTime()+"\n");
+        return ResponseEntity.ok("You successfully registered to this lecture " + lecture.getTopic() + " on " + lecture.getStartTime() + "-" + lecture.getEndTime());
     }
 
 
@@ -95,7 +99,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     private void writeToFile(String email, LocalTime startTime) throws IOException {
-        String data = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + ", " + email + ", Hello,We are appreciate that you decided to participate in our lectures! See you April 26th at " + startTime;
+        String data = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + ", " + email + ", Hello,We are appreciate that you decided to participate in our lectures! See you April 26th at " + startTime+"\n";
         Resource resource = new FileSystemResource("powiadomienia.txt");
         FileWriter fileWriter = new FileWriter(resource.getFile(), true);
         fileWriter.write(data);

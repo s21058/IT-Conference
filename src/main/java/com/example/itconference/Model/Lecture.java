@@ -61,6 +61,7 @@ public class Lecture {
         dto.setTopic(lecture.getTopic());
         dto.setStartTime(lecture.getStartTime());
         dto.setEndTime(lecture.getEndTime());
+        dto.setParticipants(Participant.toLectureDTO(lecture.getParticipants()));
         return dto;
     }
 
