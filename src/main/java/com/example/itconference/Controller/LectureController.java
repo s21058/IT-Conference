@@ -1,26 +1,22 @@
 package com.example.itconference.Controller;
 
-import com.example.itconference.DTO.LectureDTO;
+import com.example.itconference.DTO.Lecture.LectureDTO;
 import com.example.itconference.DTO.Participant.ParticipantReservationDTO;
 import com.example.itconference.Model.Lecture;
 import com.example.itconference.Service.ConferenceService.ConferenceService;
-import com.example.itconference.Service.ParticipantService.ParticipantService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.time.LocalTime;
 import java.util.*;
 
 @RestController
 @RequestMapping("/conference")
+@AllArgsConstructor
 public class LectureController {
-    @Autowired
-    ConferenceService conferenceService;
-
-    @Autowired
-    ParticipantService participantService;
+    private final ConferenceService conferenceService;
 
     @GetMapping("/lectures")
     private List<LectureDTO> getAllLectures() {

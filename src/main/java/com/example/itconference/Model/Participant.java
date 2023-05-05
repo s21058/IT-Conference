@@ -1,6 +1,5 @@
 package com.example.itconference.Model;
 
-import com.example.itconference.DTO.LectureDTO;
 import com.example.itconference.DTO.Participant.ParticipantGetDTO;
 import jakarta.persistence.*;
 
@@ -8,6 +7,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
@@ -15,8 +15,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Entity
+@AllArgsConstructor
 public class Participant {
     @Getter
     @Setter
@@ -62,24 +64,27 @@ public class Participant {
     }
 
     public static ParticipantGetDTO toDTO(Optional<Participant> participant) {
-        ParticipantGetDTO getDTO = new ParticipantGetDTO();
-        getDTO.setFirstName(participant.get().getFirstName());
-        getDTO.setMiddleName(participant.get().getMiddleName());
-        getDTO.setLastName(participant.get().getLastName());
-        getDTO.setEmail(participant.get().getEmail());
-        getDTO.setLogin(participant.get().getLogin());
-        getDTO.setLectures(Lecture.parseToDTOList(participant.get().getLectures()));
-        return getDTO;
+        return new ParticipantGetDTO(
+                participant.get().getFirstName(),
+                participant.get().getMiddleName(),
+                participant.get().getLastName(),
+                participant.get().getLogin(),
+                participant.get().getEmail(),
+                Lecture.parseToDTOList(participant.get().getLectures()));
     }
 
     public static ParticipantGetDTO toDTO(Participant participant) {
-        ParticipantGetDTO getDTO = new ParticipantGetDTO();
-        getDTO.setFirstName(participant.getFirstName());
-        getDTO.setMiddleName(participant.getMiddleName());
-        getDTO.setLastName(participant.getLastName());
-        getDTO.setEmail(participant.getEmail());
-        getDTO.setLogin(participant.getLogin());
-        getDTO.setLectures(Lecture.parseToDTOList(participant.getLectures()));
-        return getDTO;
+        return new ParticipantGetDTO(
+                participant.getFirstName(),
+                participant.getMiddleName(),
+                participant.getLastName(),
+                participant.getLogin(),
+                participant.getEmail(),
+                Lecture.parseToDTOList(participant.getLectures()));
     }
+
+    public static List<ParticipantGetDTO> toDTO(List<Participant> participant) {
+       return participant.stream().map(Participant::toDTO).collect(Collectors.toList());
+    }
+
 }

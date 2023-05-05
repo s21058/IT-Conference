@@ -5,10 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
+
 import javax.validation.constraints.Size;
 
 public class ParticipantRegistrationDTO {
@@ -42,8 +42,8 @@ public class ParticipantRegistrationDTO {
     private String email;
 
 
-    public Participant toParticipant(){
-        Participant participant=new Participant();
+    public Participant toParticipant() {
+        Participant participant = new Participant();
         participant.setFirstName(this.getFirstName());
         participant.setLastName(this.getLastName());
         participant.setMiddleName(this.getMiddleName());

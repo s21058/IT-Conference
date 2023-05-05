@@ -1,9 +1,10 @@
 package com.example.itconference.DTO.Participant;
 
-import com.example.itconference.DTO.LectureDTO;
-import com.example.itconference.Model.Lecture;
+import com.example.itconference.DTO.Lecture.LectureGetDTO;
 import jakarta.persistence.ManyToMany;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,6 +14,8 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class ParticipantGetDTO {
 
     @Getter
@@ -47,5 +50,5 @@ public class ParticipantGetDTO {
     @Getter
     @Setter
     @ManyToMany
-    private List<LectureDTO> lectures=new ArrayList<>();
+    private List<LectureGetDTO> lectures=new ArrayList<>();
 }

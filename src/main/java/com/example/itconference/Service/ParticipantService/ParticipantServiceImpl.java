@@ -1,6 +1,7 @@
 package com.example.itconference.Service.ParticipantService;
 
 
+import com.example.itconference.DTO.Participant.ParticipantGetDTO;
 import com.example.itconference.DTO.Participant.ParticipantRegistrationDTO;
 import com.example.itconference.Model.Participant;
 import com.example.itconference.Repository.ParticipantRepository;
@@ -20,24 +21,25 @@ public class ParticipantServiceImpl implements ParticipantService{
         this.participantRepository = participantRepository;
     }
 
-    public List<Participant> findAll() {
-        return participantRepository.findAll();
+    public List<ParticipantGetDTO> findAll() {
+        return Participant.toDTO(participantRepository.findAll());
     }
 
-    public ResponseEntity<String> save(ParticipantRegistrationDTO participantRegistrationDTO) {
-        var existingParticipant = participantRepository.findByLogin(participantRegistrationDTO.getLogin());
+    public ResponseEntity<String> save(Participant participant) {
+        var existingParticipant = participantRepository.findByLogin(participant.getLogin());
 
-        if (existingParticipant.isPresent() && !existingParticipant.get().getEmail().equals(participantRegistrationDTO.getEmail())) {
+        if (existingParticipant.isPresent() && !existingParticipant.get().getEmail().equals(participant.getEmail())) {
             // Participant with the same login but different email already exists
-            return ResponseEntity.badRequest().body("Participant with such login [" + participantRegistrationDTO.getLogin() + "] already exists");
-        } else if (existingParticipant.isPresent() && existingParticipant.get().getEmail().equals(participantRegistrationDTO.getEmail())) {
+            return ResponseEntity.badRequest().body("Participant with such login [" + participant.getLogin() + "] already exists");
+        } else if (existingParticipant.isPresent() && existingParticipant.get().getEmail().equals(participant.getEmail())) {
             // Participant with the same login and email already exists
-            return ResponseEntity.badRequest().body("This email [" + participantRegistrationDTO.getEmail() + "] and login[" + participantRegistrationDTO.getLogin() + "] are already registered");
-        }else if(isEmailExist(participantRegistrationDTO.getEmail())){
+            return ResponseEntity.badRequest().body("This email [" + participant.getEmail() + "] and login[" + participant.getLogin() + "] are already registered");
+        }else if(isEmailExist(participant.getEmail())){
             return ResponseEntity.badRequest().body("This email already exist");
         } else {
             // Participant does not exist, save it
-            participantRepository.save(participantRegistrationDTO.toParticipant());
+            participantRepository.save(participant);
+            // return string
             return ResponseEntity.ok("Saved");
         }
     }

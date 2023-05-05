@@ -1,9 +1,10 @@
 package com.example.itconference.Model;
 
-import com.example.itconference.DTO.LectureDTO;
-import com.example.itconference.DTO.Participant.ParticipantGetDTO;
+import com.example.itconference.DTO.Lecture.LectureDTO;
+import com.example.itconference.DTO.Lecture.LectureGetDTO;
 import jakarta.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
@@ -12,11 +13,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Size;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
+@AllArgsConstructor
 public class Lecture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,14 +49,12 @@ public class Lecture {
     public Lecture() {
 
     }
-    public static List<LectureDTO> parseToDTOList(List<Lecture> lectures) {
-        return lectures.stream().map(lecture -> {
-            LectureDTO dto = new LectureDTO();
-            dto.setTopic(lecture.getTopic());
-            dto.setStartTime(lecture.getStartTime());
-            dto.setEndTime(lecture.getEndTime());
-            return dto;
-        }).collect(Collectors.toList());
+    public static List<LectureGetDTO> parseToDTOList(List<Lecture> lectures) {
+        return lectures.stream().map(lecture -> new LectureGetDTO(
+                lecture.getTopic(),
+                lecture.getStartTime(),
+                lecture.getEndTime()
+        )).collect(Collectors.toList());
     }
     public static LectureDTO parseToDTO(Lecture lecture){
         LectureDTO dto=new LectureDTO();

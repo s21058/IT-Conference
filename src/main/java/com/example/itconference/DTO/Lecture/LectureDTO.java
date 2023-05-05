@@ -1,14 +1,17 @@
-package com.example.itconference.DTO;
+package com.example.itconference.DTO.Lecture;
 
 import com.example.itconference.DTO.Participant.ParticipantGetDTO;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@AllArgsConstructor
+@NoArgsConstructor
 public class LectureDTO {
     @Getter
     @Setter
