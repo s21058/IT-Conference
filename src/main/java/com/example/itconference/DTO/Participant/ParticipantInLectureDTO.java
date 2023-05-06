@@ -1,6 +1,5 @@
 package com.example.itconference.DTO.Participant;
 
-import com.example.itconference.Model.Participant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

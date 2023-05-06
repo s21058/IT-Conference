@@ -89,8 +89,4 @@ public class ParticipantServiceImpl implements ParticipantService{
         return participantRepository.findById(id);
     }
 
-
-    protected boolean isEmailExist(String email){
-        return participantRepository.findAll().stream().anyMatch(participant -> participant.getEmail().equals(email));
-    }
 }

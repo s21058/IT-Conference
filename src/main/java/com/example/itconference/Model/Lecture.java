@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,8 +19,9 @@ import java.util.stream.Collectors;
 
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 public class Lecture {
-    private static final int MAX_PARTICIPANTS=5;
+    public static final int MAX_PARTICIPANTS=5;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
@@ -47,9 +49,6 @@ public class Lecture {
     @ManyToMany
     public List<Participant> participants;
 
-    public Lecture() {
-
-    }
     public static List<LectureGetDTO> parseToDTOList(List<Lecture> lectures) {
         return lectures.stream().map(lecture -> new LectureGetDTO(
                 lecture.getTopic(),
@@ -73,6 +72,7 @@ public class Lecture {
         dto.setParticipants(Participant.toDTOinLecture(lecture.getParticipants()));
         return dto;
     }
+
     public void addParticipant(Participant participant){
         participants.add(participant);
     }

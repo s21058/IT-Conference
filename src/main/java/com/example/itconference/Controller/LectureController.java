@@ -6,7 +6,6 @@ import com.example.itconference.Model.Lecture;
 import com.example.itconference.Service.ConferenceService.ConferenceService;
 import lombok.AllArgsConstructor;
 
-import lombok.Getter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

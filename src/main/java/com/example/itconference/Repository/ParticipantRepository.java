@@ -1,11 +1,9 @@
 package com.example.itconference.Repository;
 
-import com.example.itconference.DTO.Participant.ParticipantGetDTO;
 import com.example.itconference.Model.Participant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository

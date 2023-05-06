@@ -2,7 +2,6 @@ package com.example.itconference.Model;
 
 import com.example.itconference.DTO.Participant.ParticipantGetDTO;
 import com.example.itconference.DTO.Participant.ParticipantInLectureDTO;
-import com.example.itconference.DTO.Participant.ParticipantReservationDTO;
 import com.example.itconference.DTO.Participant.ParticipantSystemDTO;
 import jakarta.persistence.*;
 
@@ -12,16 +11,17 @@ import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 public class Participant {
     @Getter
     @Setter
@@ -63,8 +63,6 @@ public class Participant {
     @ManyToMany
     private List<Lecture> lectures;
 
-    public Participant() {
-    }
 
     public static ParticipantGetDTO toDTO(Participant participant) {
         return new ParticipantGetDTO(
@@ -92,9 +90,7 @@ public class Participant {
                 l.getEmail()
         )).collect(Collectors.toList());
     }
-    public static List<ParticipantGetDTO> toDTO(List<Participant> participant) {
-       return participant.stream().map(Participant::toDTO).collect(Collectors.toList());
-    }
+
     public void addLecture(Lecture lecture){
         lectures.add(lecture);
     }
