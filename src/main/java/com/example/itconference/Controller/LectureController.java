@@ -6,6 +6,7 @@ import com.example.itconference.Model.Lecture;
 import com.example.itconference.Service.ConferenceService.ConferenceService;
 import lombok.AllArgsConstructor;
 
+import lombok.Getter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,11 +18,14 @@ import java.util.*;
 @AllArgsConstructor
 public class LectureController {
     private final ConferenceService conferenceService;
+    @GetMapping("/registered")
+    public ResponseEntity<?>showRegistered(@RequestParam String login){
+        return conferenceService.findRegistered(login);
+    }
 
     @GetMapping("/lectures")
-    private List<LectureDTO> getAllLectures() {
-
-        return null;
+    public List<LectureDTO> getAllLectures() {
+     return Lecture.parseToDTO(conferenceService.findAll());
     }
 
     @GetMapping("/lectures/lecture/{idLecture}")

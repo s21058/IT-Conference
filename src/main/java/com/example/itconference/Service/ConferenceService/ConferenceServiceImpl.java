@@ -2,6 +2,7 @@ package com.example.itconference.Service.ConferenceService;
 
 import com.example.itconference.DTO.Participant.ParticipantReservationDTO;
 import com.example.itconference.Model.Lecture;
+import com.example.itconference.Model.Participant;
 import com.example.itconference.Repository.ConferenceRepository;
 import com.example.itconference.Repository.ParticipantRepository;
 import org.springframework.core.io.FileSystemResource;
@@ -11,10 +12,14 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ConferenceServiceImpl implements ConferenceService {
@@ -39,9 +44,16 @@ public class ConferenceServiceImpl implements ConferenceService {
                 LocalTime.of(10, 0), LocalTime.of(11, 45),
                 LocalTime.of(12, 0), LocalTime.of(13, 45),
                 LocalTime.of(14, 0), LocalTime.of(15, 45));
-
+        List<String> allowedTopic = new ArrayList<>(Arrays.asList("Java", ".NET", "Azure Cloud"));
         if (!isValidTime(lecture, validTime)) {
             return ResponseEntity.badRequest().body("Invalid time for lecture. Allowed times: 10:00-11:45, 12:00-13:45, 14:00-15:45.");
+        }
+        if (!isTopicValid(allowedTopic, lecture.getTopic())) {
+            var lectures = conferenceRepository.findAll();
+            if (isThreeAtTheSameTime(lectures, lecture.getStartTime())) {
+                return ResponseEntity.badRequest().body("It's possible to add only 3 lectures at the same time");
+            }
+            return ResponseEntity.badRequest().body("You cannot add Topic[" + lecture.getTopic() + "]. Available Topics are Java, .NET ,Azure Cloud ");
         }
         List<Lecture> lectures = conferenceRepository.findByTopic(lecture.getTopic());
         if (isLecturePresent(lectures, lecture)) {
@@ -65,7 +77,9 @@ public class ConferenceServiceImpl implements ConferenceService {
     public ResponseEntity<?> makeReservation(Integer idLecture, ParticipantReservationDTO participantInfo) throws IOException {
         var lecture = conferenceRepository.findById(idLecture);
         var participant = participantRepository.findByLogin(participantInfo.getLogin());
-
+        if (lecture.getParticipants().size() == 5) {
+            return ResponseEntity.badRequest().body("This lecture already has the maximum number of participants, try to register for another time");
+        }
         if (participantRepository.findAll().stream().anyMatch(p -> p.getLogin().equals(participantInfo.getLogin()) &&
                 !p.getEmail().equals(participantInfo.getEmail()))) {
             return ResponseEntity.badRequest().body("This login[" + participantInfo.getLogin() + "] already used");
@@ -74,16 +88,24 @@ public class ConferenceServiceImpl implements ConferenceService {
                 l.getStartTime().compareTo(lecture.getStartTime()) == 0)) {
             return ResponseEntity.badRequest().body("You have already been registered for this lecture");
 
-        }else if(participant.get().getLectures().stream().anyMatch(l->l.getStartTime().compareTo(lecture.getStartTime())==0)){
-            return ResponseEntity.badRequest().body("You already have reservation at "+lecture.getStartTime());
+        } else if (participant.get().getLectures().stream().anyMatch(l -> l.getStartTime().compareTo(lecture.getStartTime()) == 0)) {
+            return ResponseEntity.badRequest().body("You already have reservation at " + lecture.getStartTime());
         }
-        lecture.getParticipants().add(participant.get());
-        System.out.println(lecture.getParticipants());
-        participant.get().getLectures().add(lecture);
+        lecture.addParticipant(participant.get());
+        participant.get().addLecture(lecture);
         participantRepository.save(participant.get());
         conferenceRepository.save(lecture);
-        writeToFile(participant.get().getEmail(), lecture.getStartTime());
-        return ResponseEntity.ok("You successfully registered to this lecture " + lecture.getTopic() + " on " + lecture.getStartTime() + "-" + lecture.getEndTime());
+        writeToFile(participant.get().getEmail(), lecture.getStartTime(),lecture.getTopic());
+        return ResponseEntity.ok("You successfully registered to this lecture " + lecture.getTopic() + " on 26th of April at " + lecture.getStartTime() + "-" + lecture.getEndTime());
+    }
+
+    @Override
+    public ResponseEntity<?> findRegistered(String login) {
+        if(login.equals("admin")) {
+            return ResponseEntity.ok().body(Participant.toDTOinSystem(allRegistered()));
+        }else{
+            return ResponseEntity.badRequest().body("You dont have permission for this operation");
+        }
     }
 
 
@@ -98,11 +120,29 @@ public class ConferenceServiceImpl implements ConferenceService {
                 l -> l.getStartTime().compareTo(lecture.getStartTime()) == 0);
     }
 
-    private void writeToFile(String email, LocalTime startTime) throws IOException {
-        String data = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + ", " + email + ", Hello,We are appreciate that you decided to participate in our lectures! See you April 26th at " + startTime+"\n";
+    private void writeToFile(String email, LocalTime startTime,String topic) throws IOException {
+        String data = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ", " + email + ", Hello,We are appreciate that you decided to participate in our "+topic+" lecture! See you April 26th at " + startTime + "\n";
         Resource resource = new FileSystemResource("powiadomienia.txt");
         FileWriter fileWriter = new FileWriter(resource.getFile(), true);
         fileWriter.write(data);
         fileWriter.close();
+    }
+
+    private boolean isTopicValid(List<String> topics, String topic) {
+        return topics.stream().anyMatch(t -> t.equals(topic));
+    }
+
+    private boolean isThreeAtTheSameTime(List<Lecture> lectures, LocalTime start) {
+        var count = lectures.stream().map(l -> l.getStartTime().compareTo(start) == 0).count();
+        return count == 3;
+    }
+
+    private List<Participant> allRegistered() {
+        var lectures = conferenceRepository.findAll().stream().
+                filter(l -> l.getParticipants().size() > 0).collect(Collectors.toList());
+
+        return lectures.stream().
+                flatMap(lecture -> lecture.getParticipants().stream())
+                .collect(Collectors.toList());
     }
 }

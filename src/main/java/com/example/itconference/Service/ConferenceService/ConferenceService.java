@@ -1,6 +1,7 @@
 package com.example.itconference.Service.ConferenceService;
 
 import com.example.itconference.DTO.Participant.ParticipantReservationDTO;
+import com.example.itconference.DTO.Participant.ParticipantSystemDTO;
 import com.example.itconference.Model.Lecture;
 import org.springframework.http.ResponseEntity;
 
@@ -14,5 +15,5 @@ public interface ConferenceService {
     Lecture findById(Integer id);
     List<Lecture> findByTopic(String topic);
     ResponseEntity<?>makeReservation(Integer idLecture, ParticipantReservationDTO reservationDTO) throws IOException;
-
+    ResponseEntity<?> findRegistered(String login);
 }

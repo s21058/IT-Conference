@@ -3,6 +3,7 @@ package com.example.itconference.Model;
 import com.example.itconference.DTO.Participant.ParticipantGetDTO;
 import com.example.itconference.DTO.Participant.ParticipantInLectureDTO;
 import com.example.itconference.DTO.Participant.ParticipantReservationDTO;
+import com.example.itconference.DTO.Participant.ParticipantSystemDTO;
 import jakarta.persistence.*;
 
 import javax.validation.constraints.Pattern;
@@ -84,7 +85,7 @@ public class Participant {
                 participant.getEmail(),
                 Lecture.parseToDTOList(participant.getLectures()));
     }
-    public static List<ParticipantInLectureDTO> toLectureDTO(List<Participant> participant) {
+    public static List<ParticipantInLectureDTO> toDTOinLecture(List<Participant> participant) {
        return participant.stream().map(l->new ParticipantInLectureDTO(
                l.getFirstName(),
                l.getMiddleName(),
@@ -93,8 +94,19 @@ public class Participant {
                l.getEmail()
        )).collect(Collectors.toList());
     }
+    public static List<ParticipantSystemDTO> toDTOinSystem(List<Participant> participant) {
+        return participant.stream().map(l->new ParticipantSystemDTO(
+                l.getFirstName(),
+                l.getMiddleName(),
+                l.getLastName(),
+                l.getEmail()
+        )).collect(Collectors.toList());
+    }
     public static List<ParticipantGetDTO> toDTO(List<Participant> participant) {
        return participant.stream().map(Participant::toDTO).collect(Collectors.toList());
+    }
+    public void addLecture(Lecture lecture){
+        lectures.add(lecture);
     }
 
 }

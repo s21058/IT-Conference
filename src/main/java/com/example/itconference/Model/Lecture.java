@@ -56,13 +56,23 @@ public class Lecture {
                 lecture.getEndTime()
         )).collect(Collectors.toList());
     }
+    public static List<LectureDTO> parseToDTO(List<Lecture> lectures) {
+        return lectures.stream().map(lecture -> new LectureDTO(
+                lecture.getTopic(),
+                lecture.getStartTime(),
+                lecture.getEndTime(),
+                Participant.toDTOinLecture(lecture.getParticipants())
+        )).collect(Collectors.toList());
+    }
     public static LectureDTO parseToDTO(Lecture lecture){
         LectureDTO dto=new LectureDTO();
         dto.setTopic(lecture.getTopic());
         dto.setStartTime(lecture.getStartTime());
         dto.setEndTime(lecture.getEndTime());
-        dto.setParticipants(Participant.toLectureDTO(lecture.getParticipants()));
+        dto.setParticipants(Participant.toDTOinLecture(lecture.getParticipants()));
         return dto;
     }
-
+    public void addParticipant(Participant participant){
+        participants.add(participant);
+    }
 }
