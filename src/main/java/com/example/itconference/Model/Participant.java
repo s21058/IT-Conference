@@ -66,16 +66,6 @@ public class Participant {
     public Participant() {
     }
 
-    public static ParticipantGetDTO toDTO(Optional<Participant> participant) {
-        return new ParticipantGetDTO(
-                participant.get().getFirstName(),
-                participant.get().getMiddleName(),
-                participant.get().getLastName(),
-                participant.get().getLogin(),
-                participant.get().getEmail(),
-                Lecture.parseToDTOList(participant.get().getLectures()));
-    }
-
     public static ParticipantGetDTO toDTO(Participant participant) {
         return new ParticipantGetDTO(
                 participant.getFirstName(),
@@ -107,6 +97,9 @@ public class Participant {
     }
     public void addLecture(Lecture lecture){
         lectures.add(lecture);
+    }
+    public void deleteLecture(Lecture lecture){
+        lectures.remove(lecture);
     }
 
 }

@@ -9,10 +9,11 @@ import java.util.Optional;
 
 
 public interface ParticipantService {
-    List<ParticipantGetDTO> findAll();
+    List<Participant> findAll();
     ResponseEntity<String> save(Participant participant);
     Optional<Participant> findByLogin(String login);
     Optional<Participant> findByEmail(String email);
     Participant findById(Integer id);
     ResponseEntity<?> updateEmail(Integer id, String email);
+    ResponseEntity<?> cancelReservation(String login,Integer lectureId);
 }

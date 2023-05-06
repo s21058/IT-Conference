@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @Entity
 @AllArgsConstructor
 public class Lecture {
+    private static final int MAX_PARTICIPANTS=5;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
@@ -44,7 +45,7 @@ public class Lecture {
     @Setter
     @Size(max = 5)
     @ManyToMany
-    private List<Participant> participants;
+    public List<Participant> participants;
 
     public Lecture() {
 
@@ -74,5 +75,11 @@ public class Lecture {
     }
     public void addParticipant(Participant participant){
         participants.add(participant);
+    }
+    public void deleteParticipant(Participant participant){
+        participants.remove(participant);
+    }
+    public boolean isFull(){
+        return participants.size()==MAX_PARTICIPANTS;
     }
 }

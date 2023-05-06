@@ -30,7 +30,6 @@ public class LectureController {
 
     @GetMapping("/lectures/lecture/{idLecture}")
     public ResponseEntity<LectureDTO> chooseLecture(@PathVariable Integer idLecture) {
-
         return ResponseEntity.ok(Lecture.parseToDTO(conferenceService.findById(idLecture)));
     }
 
