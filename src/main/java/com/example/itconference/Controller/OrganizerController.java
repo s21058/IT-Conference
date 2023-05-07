@@ -1,8 +1,6 @@
 package com.example.itconference.Controller;
 
-import com.example.itconference.Service.ConferenceService.ConferenceService;
 import com.example.itconference.Service.Organizer.OrganizerService;
-import com.example.itconference.Service.ParticipantService.ParticipantService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,5 +17,9 @@ private final OrganizerService organizerService;
     @GetMapping("/lecture-percentage")
     public ResponseEntity<?>lecturePercentage(@RequestParam Integer lectureId){
         return organizerService.interestInLecture(lectureId);
+    }
+    @GetMapping("/total-percentage")
+    public ResponseEntity<?>total(){
+        return ResponseEntity.ok().body(organizerService.interestInConference());
     }
 }

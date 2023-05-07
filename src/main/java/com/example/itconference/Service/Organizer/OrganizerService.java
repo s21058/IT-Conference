@@ -4,4 +4,6 @@ import org.springframework.http.ResponseEntity;
 
 public interface OrganizerService {
     ResponseEntity<?> interestInLecture(Integer id);
+
+    String interestInConference();
 }

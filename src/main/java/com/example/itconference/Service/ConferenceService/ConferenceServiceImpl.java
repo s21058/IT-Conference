@@ -17,10 +17,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -139,7 +136,6 @@ public class ConferenceServiceImpl implements ConferenceService {
         var lectures = conferenceRepository.findAll().stream().
                 filter(l -> l.getParticipants().size() > 0).collect(Collectors.toList());
         return lectures.stream().
-                flatMap(lecture -> lecture.getParticipants().stream())
-                .collect(Collectors.toList());
+                flatMap(lecture -> lecture.getParticipants().stream()).distinct().collect(Collectors.toList());
     }
 }
