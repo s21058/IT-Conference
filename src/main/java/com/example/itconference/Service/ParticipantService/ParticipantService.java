@@ -1,6 +1,5 @@
 package com.example.itconference.Service.ParticipantService;
 
-import com.example.itconference.DTO.Participant.ParticipantGetDTO;
 import com.example.itconference.Model.Participant;
 import org.springframework.http.ResponseEntity;
 
@@ -16,4 +15,5 @@ public interface ParticipantService {
     Participant findById(Integer id);
     ResponseEntity<?> updateEmail(Integer id, String email);
     ResponseEntity<?> cancelReservation(String login,Integer lectureId);
+    String showPlan();
 }

@@ -37,9 +37,14 @@ public class ParticipantController {
     public ResponseEntity<ParticipantGetDTO> findParticipant(@RequestParam Integer id){
         return ResponseEntity.ok(Participant.toDTO(participantService.findById(id)));
     }
-    @DeleteMapping("/reservations/{login}/cancel")
-    public ResponseEntity<?>cancelReservation(@PathVariable String login,@RequestParam Integer lectureId){
+    @DeleteMapping("/reservations/cancel")
+    public ResponseEntity<?>cancelReservation(@RequestParam String login,@RequestParam Integer lectureId){
         return participantService.cancelReservation(login,lectureId);
+    }
+
+    @GetMapping("showPlan")
+    public String showPlan(){
+        return participantService.showPlan();
     }
 }
 

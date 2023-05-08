@@ -97,5 +97,8 @@ public class Participant {
     public void deleteLecture(Lecture lecture){
         lectures.remove(lecture);
     }
+    public boolean checkLecture(Lecture lecture){
+        return lectures.contains(lecture);
+    }
 
 }

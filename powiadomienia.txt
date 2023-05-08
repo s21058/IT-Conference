@@ -40,3 +40,9 @@
 2023-05-07 22:14:40, bozhko.sviatos@gmail.com, Hello,We are appreciate that you decided to participate in our .NET lecture! See you April 26th at 12:00
 2023-05-07 22:14:48, bozhko.sviatos1@gmail.com, Hello,We are appreciate that you decided to participate in our .NET lecture! See you April 26th at 12:00
 2023-05-07 22:14:50, bozhko.sviatos1@gmail.com, Hello,We are appreciate that you decided to participate in our Java lecture! See you April 26th at 10:00
+2023-05-08 16:44:29, bozhko.sviatos@gmail.com, Hello,We are appreciate that you decided to participate in our Java lecture! See you April 26th at 10:00
+2023-05-08 16:46:48, bozhko.sviatos1@gmail.com, Hello,We are appreciate that you decided to participate in our Java lecture! See you April 26th at 10:00
+2023-05-08 16:46:53, bozhko.sviatos2@gmail.com, Hello,We are appreciate that you decided to participate in our Java lecture! See you April 26th at 10:00
+2023-05-08 16:46:57, bozhko.sviatos3@gmail.com, Hello,We are appreciate that you decided to participate in our Java lecture! See you April 26th at 10:00
+2023-05-08 16:47:01, bozhko.sviatos4@gmail.com, Hello,We are appreciate that you decided to participate in our Java lecture! See you April 26th at 10:00
+2023-05-08 17:12:38, bozhko.sviatos@gmail.com, Hello,We are appreciate that you decided to participate in our Azure Cloud lecture! See you April 26th at 12:00
